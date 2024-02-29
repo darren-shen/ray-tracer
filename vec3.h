@@ -42,10 +42,12 @@ class vec3 {
 
     vec3& operator/=(double t) { return *this *= 1/t; }
 
-    // useful methods
+    // other helper methods
     double length_squared() const { return e[0]*e[0] + e[1]*e[1] + e[2]*e[2]; }
-    
     double length() const { return sqrt(length_squared()); }
+
+    // for diffusion
+    static vec3 random(double min, double max) { return vec3(random_double(min,max), random_double(min,max), random_double(min,max)); }
 };
 
 // vector utility functions
@@ -63,6 +65,25 @@ inline vec3 cross(const vec3 &u, const vec3 &v) {
     return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]);
+}
+
+// random unit vector via rejection sampling, potentially change to 3 normals? would be more efficient
+// https://angms.science/doc/RM/randUnitVec.pdf
+inline vec3 random_unit_vector() {
+    while (true) {
+        auto p = vec3::random(-1,1);
+        if (p.length_squared() < 1)
+            return unit_vector(p);
+    }
+}
+
+// finds reflected ray, ray points in same direction as normal
+inline vec3 random_on_hemisphere(const vec3& normal) {
+    vec3 on_unit_sphere = random_unit_vector();
+    if (dot(on_unit_sphere, normal) > 0.0) 
+        return on_unit_sphere;
+    else
+        return -on_unit_sphere;
 }
 
 #endif

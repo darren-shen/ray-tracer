@@ -7,11 +7,12 @@
 
 using color = vec3;
 
-void write_color(std::ostream &out, color pixel_color) {
-    // writes color
-    out << static_cast<int>(255.999 * pixel_color.x()) << ' '
-        << static_cast<int>(255.999 * pixel_color.y()) << ' '
-        << static_cast<int>(255.999 * pixel_color.z()) << '\n';
+void write_color(std::ostream &out, color pixel_color, int samples) {
+    // takes SUM (not average) of all sample points and writes color
+    // takes square root for gamma correction
+    out << static_cast<int>(255.999 * 0) << ' '
+        << static_cast<int>(255.999 * sqrt(pixel_color.y() / samples)) << ' '
+        << static_cast<int>(255.999 * sqrt(pixel_color.z() / samples)) << '\n';
 }
 
 #endif
