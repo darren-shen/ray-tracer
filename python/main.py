@@ -3,10 +3,22 @@ from tqdm import tqdm
 from vec3 import Vec3, unit_vector
 from color import write_color
 from ray import Ray
+from hittable import Hit, Hittable
+from hittable_list import HittableList
+from sphere import Sphere
 
-def ray_color(r: Ray):
+def ray_color(r: Ray, world):
+    temp_hit = Hit()
+    if world.hit(r, 0, float('inf'), temp_hit):
+        return .5 * (temp_hit.normal + Vec3(1, 1, 1))
+    
     a = .5 * unit_vector(r.get_direction()).y + 1
     return (1 - a) * Vec3(1, 1, 1) + a * Vec3(.5, .7, 1)
+
+world = HittableList()
+world.add(Sphere(Vec3(0, 0, -1), .5))
+world.add(Sphere(Vec3(0, -100.5, -1), 100))
+
 
 image_width = 400
 # ratio is width/height
@@ -34,4 +46,4 @@ with open('test.ppm', 'w') as f:
         for i in range(image_width):
             curr_pixel = upper_left_pixel + (i * u_delta) + (j * v_delta)
             curr_ray = curr_pixel - camera_center
-            write_color(f, ray_color(Ray(camera_center, curr_ray)))
+            write_color(f, ray_color(Ray(camera_center, curr_ray), world))

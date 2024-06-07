@@ -43,10 +43,16 @@ class Vec3:
         return f"{self.e[0]} {self.e[1]} {self.e[2]}"
 
     def __add__(self, other):
-        return Vec3(*(self.e + other.e))
+        if isinstance(other, Vec3):
+            return Vec3(*(self.e + other.e))
+        else:
+            return Vec3(*(self.e + other))
 
     def __sub__(self, other):
-        return Vec3(*(self.e - other.e))
+        if isinstance(other, Vec3):
+            return Vec3(*(self.e - other.e))
+        else:
+            return Vec3(*(self.e - other))
 
     def __mul__(self, other):
         if isinstance(other, Vec3):
