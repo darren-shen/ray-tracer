@@ -10,5 +10,5 @@ class Ray:
     def get_direction(self):
         return self.direction
     
-    def at(self, t):
+    def at(self, t: int):
         return self.origin + t * self.direction

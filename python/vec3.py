@@ -1,4 +1,5 @@
 import numpy as np
+from utils import random_double
 
 class Vec3:
     def __init__(self, x=0.0, y=0.0, z=0.0):
@@ -74,14 +75,31 @@ class Vec3:
         return np.dot(self.e, self.e)
 
 # dot, cross, unit
-def dot(u, v):
-    return np.dot(u, v)
+def dot(u: Vec3, v: Vec3):
+    return np.dot(u.e, v.e)
 
-def cross(u, v):
-    return Vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
-                u.e[2] * v.e[0] - u.e[0] * v.e[2],
-                u.e[0] * v.e[1] - u.e[1] * v.e[0])
+def cross(u: Vec3, v: Vec3):
+    u_e, v_e = u.e, v.e
+    return Vec3(u_e[1] * v_e[2] - u_e[2] * v_e[1],
+                u_e[2] * v_e[0] - u_e[0] * v_e[2],
+                u_e[0] * v_e[1] - u_e[1] * v_e[0])
 
-def unit_vector(v):
+def unit_vector(v: Vec3):
     return v / v.length()
+
+def random_vector(low=0, high=1):
+    return Vec3(random_double(low, high), random_double(low, high), random_double(low, high))
+
+def random_unit_vector():
+    r = Vec3()
+    while True:
+        r = random_vector(-1, 1)
+        if r.length_squared() < 1:
+            return unit_vector(r)
+        
+def random_unit_on_hemisphere(normal):
+    r = random_unit_vector()
+    if dot(r, normal) > 0:
+        return r
+    return -r
 

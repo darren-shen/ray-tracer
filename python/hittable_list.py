@@ -1,4 +1,6 @@
+from utils import Interval
 from hittable import Hit, Hittable
+from ray import Ray
 
 class HittableList:
     def __init__(self):
@@ -7,17 +9,16 @@ class HittableList:
     def clear(self):
         self.objects = []
 
-    def add(self, obj):
+    def add(self, obj: Hittable):
         self.objects.append(obj)
 
-    def hit(self, r, ray_tmin, ray_tmax, rec):
-        temp_hit = Hit()
+    def hit(self, r: Ray, ray_t: Interval, hit: Hit):
         has_hit = False
-        closest = ray_tmax
+        closest = ray_t.high
         
         for obj in self.objects:
-            if obj.hit(r, ray_tmin, closest, rec):
+            if obj.hit(r, Interval(ray_t.low, closest), hit):
                 has_hit = True
-                closest, rec.t, rec.p, rec.normal = temp_hit.t, temp_hit.t, temp_hit.p, temp_hit.normal
+                closest = hit.t
 
         return has_hit
