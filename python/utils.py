@@ -1,4 +1,5 @@
-import numpy as np
+from numpy import array, dot
+from numpy.random import rand, uniform
 
 pi = 3.1415926535
 
@@ -22,10 +23,29 @@ class Interval:
             return self.high
         return x
     
-def degree_to_rad(degrees):
+def length_squared(v: array):
+    return dot(v, v)
+
+def degree_to_rad(degrees: int):
     return degrees * pi / 180
 
-def random_double(low=0, high=1):
-    return (np.random.rand() * (high - low)) + low
+def random_double(low: int = 0, high: int = 1):
+    return (rand() * (high - low)) + low
+
+# np.dot, np.cross, np.random.uniform
     
+def unit_vector(v: array):
+    return v / v.length()
+
+def random_unit_vector():
+    while True:
+        r = uniform(-1, 1, 3)
+        if r.length_squared() < 1:
+            return unit_vector(r)
+        
+def random_unit_on_hemisphere(normal):
+    r = random_unit_vector()
+    if dot(r, normal) > 0:
+        return r
+    return -r
 

@@ -1,11 +1,11 @@
 from utils import Interval
 from ray import Ray
 from hittable import Hit, Hittable
-from vec3 import Vec3, dot
+from numpy import array, dot
 from math import sqrt
 
 class Sphere(Hittable):
-    def __init__(self, center: Vec3, radius: Vec3):
+    def __init__(self, center: array, radius: array):
         self.center, self.radius = center, radius
 
     def hit(self, r: Ray, ray_t: Interval, hit: Hit):
