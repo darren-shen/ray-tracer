@@ -1,5 +1,6 @@
 from numpy import array, dot
 from numpy.random import rand, uniform
+from numpy.linalg import norm
 
 pi = 3.1415926535
 
@@ -35,12 +36,12 @@ def random_double(low: int = 0, high: int = 1):
 # np.dot, np.cross, np.random.uniform
     
 def unit_vector(v: array):
-    return v / v.length()
+    return v / norm(v)
 
 def random_unit_vector():
     while True:
         r = uniform(-1, 1, 3)
-        if r.length_squared() < 1:
+        if length_squared(r) < 1:
             return unit_vector(r)
         
 def random_unit_on_hemisphere(normal):
@@ -48,4 +49,9 @@ def random_unit_on_hemisphere(normal):
     if dot(r, normal) > 0:
         return r
     return -r
+
+def near_zero(v: array):
+    small = 1e-8
+    return (v[0] < small) and (v[1] < small) and (v[2] < small)
+
 

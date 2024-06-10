@@ -1,13 +1,14 @@
 from utils import Interval, random_double, random_unit_on_hemisphere, random_unit_vector, unit_vector
-from numpy import array, dot, zeros
+from numpy import array, dot, zeros, multiply
 from color import write_color
 from ray import Ray
+from tqdm import tqdm
 from hittable import Hit, Hittable
 from hittable_list import HittableList
 
 class Camera:
     def __init__(self):
-        self.samples_per_pixel = 10
+        self.samples_per_pixel = 30
         self.max_depth = 10
         self.image_width = 400
         # ratio is width/height
@@ -46,14 +47,17 @@ class Camera:
         
         temp_hit = Hit()
         if world.hit(r, Interval(0.001, float('inf')), temp_hit):
-            return .5 * self.ray_color(Ray(temp_hit.point, temp_hit.normal + random_unit_vector()), depth - 1, world)
+            has_hit, attenuation, scattered = temp_hit.material.scatter(r, temp_hit)
+            if has_hit:
+                return attenuation * self.ray_color(scattered, depth - 1, world)
+            return zeros(3)
         
-        a = .5 * unit_vector(r.get_direction()).y + 1
+        a = .5 * unit_vector(r.get_direction())[1] + 1
         return (1 - a) * array([1, 1, 1]) + a * array([.5, .7, 1])
     
     def get_ray(self, i: int, j: int):
         offset = self.sample_pixel()
-        return Ray(self.camera_center, self.upper_left_pixel + (i + offset.x) * self.u_delta + (j + offset.y) * self.v_delta)
+        return Ray(self.camera_center, self.upper_left_pixel + (i + offset[0]) * self.u_delta + (j + offset[1]) * self.v_delta)
 
     def sample_pixel(self):
         return array([random_double() - .5, random_double() - .5, 0])

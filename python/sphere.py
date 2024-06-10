@@ -1,18 +1,19 @@
-from utils import Interval
+from utils import Interval, length_squared
 from ray import Ray
 from hittable import Hit, Hittable
 from numpy import array, dot
 from math import sqrt
+from materials import Material
 
 class Sphere(Hittable):
-    def __init__(self, center: array, radius: array):
-        self.center, self.radius = center, radius
+    def __init__(self, center: array, radius: array, material: Material):
+        self.center, self.radius, self.material = center, radius, material
 
     def hit(self, r: Ray, ray_t: Interval, hit: Hit):
         oc = self.center - r.origin
-        a = r.direction.length_squared()
+        a = length_squared(r.direction)
         h = dot(r.direction, oc)
-        c = oc.length_squared() - self.radius * self.radius
+        c = length_squared(oc) - self.radius * self.radius
 
         discriminant = h*h - a*c
         if discriminant < 0:
@@ -26,5 +27,6 @@ class Sphere(Hittable):
             
         hit.t = root
         hit.point = r.at(hit.t)
+        hit.material = self.material
         hit.set_normal(r, (hit.point - self.center)/self.radius)
         return True
