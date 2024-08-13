@@ -1,6 +1,6 @@
 # Ray Tracer
 
-![Ray Tracer Render](https://github.com/darren-shen/ray-tracer/blob/main/assets/sample_render.png)
+![Ray Tracer Render](./renders/render1.png)
 
 This is an open-source ray tracing engine written in Python, designed for educational purposes and readability, with performance optimizations using Numpy. The engine supports complex materials like metal and glass and includes advanced features such as anti-aliasing and defocus blur.
 
