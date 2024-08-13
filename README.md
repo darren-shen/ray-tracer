@@ -4,6 +4,8 @@
 
 This is an open-source ray tracing engine written in Python, designed for educational purposes and readability, with performance optimizations using Numpy. The engine supports complex materials like metal and glass and includes advanced features such as anti-aliasing and defocus blur.
 
+* Note there are two versions of the raytracer in this repository, an incomplete one written in C++ from when I was learning how the raytracer itself worked and a complete one written in Python.
+
 ## Features
 
 - **Complex Materials:** Support for reflective materials like metal and refractive materials like glass.
