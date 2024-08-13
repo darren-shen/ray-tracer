@@ -56,7 +56,8 @@ scene_objects.append(new_sphere)
 ## Sample Renders
 Here are some example images rendered using this engine:
 
-
+![Ray Tracer Render](./renders/render1.png)
+![Ray Tracer Render](./renders/render2.png)
 
 
 ## Contributing
